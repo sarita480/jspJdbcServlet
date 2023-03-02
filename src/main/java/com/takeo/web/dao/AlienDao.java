@@ -2,8 +2,10 @@ package com.takeo.web.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import com.mysql.cj.protocol.Resultset;
 import com.takeo.web.model.Alien;
@@ -27,7 +29,8 @@ public class AlienDao
 				a.setAname(((ResultSet) rs).getString("aname"));
 				a.setTech(((ResultSet) rs).getString("tech"));
 			}
-						
+			con.close();
+			st.close();
 			
 		}
 		catch(SQLException e)
@@ -41,6 +44,34 @@ public class AlienDao
 		return a;
 		
 	}
-
-
+	public String saveAlien(Alien a)
+	{
+		String result ="Data entered successfully";
+		try
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/emp_dept", "root", "123456");
+			java.sql.Statement st = con.createStatement();
+			
+			String sql = "insert into alien values(?,?,?)";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(0,a.getAid());
+			ps.setString(1, a.getAname());
+			ps.setString(2, a.getTech());
+			ps.executeUpdate();
+				
+		}
+		catch(SQLException e)
+		{
+			System.out.println(e);
+			result = "data not saved";
+		}
+		catch(ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		return result;
+		
+		
+	}
 }

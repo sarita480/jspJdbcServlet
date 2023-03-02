@@ -9,9 +9,10 @@
 </head>
 <body bgcolor="cyan">
 
+
 <%
 	Alien a1 = (Alien)request.getAttribute("alien");
-out.print(a1);
+	out.print(a1);
 
 %>
 
